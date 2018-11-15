@@ -7,10 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /* Created by LaunchCode
  */
@@ -20,6 +17,7 @@ public class JobData {
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
+    private static ArrayList<HashMap<String, String>> allJobsCopy;
 
 
     /**
@@ -37,7 +35,7 @@ public class JobData {
 
         ArrayList<String> values = new ArrayList<>();
 
-        for (HashMap<String, String> row : allJobs) {
+        for (HashMap<String, String> row : allJobsCopy) {
             String aValue = row.get(field);
 
             if (!values.contains(aValue)) {
@@ -53,7 +51,7 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        return allJobsCopy;
     }
 
     /**
@@ -75,7 +73,7 @@ public class JobData {
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
-        for (HashMap<String, String> row : allJobs) {
+        for (HashMap<String, String> row : allJobsCopy) {
 
             String aValue = row.get(column);
 
@@ -100,7 +98,7 @@ public class JobData {
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
-        for (HashMap<String, String> job : allJobs) {
+        for (HashMap<String, String> job : allJobsCopy) {
             for (Map.Entry<String, String> category : job.entrySet()) {
                 if (category.getValue().toLowerCase().contains(value.toLowerCase()) && (!jobs.contains(job))) {
                     jobs.add(job);
@@ -144,6 +142,7 @@ public class JobData {
                 }
 
                 allJobs.add(newJob);
+                allJobsCopy = new ArrayList<>(allJobs);
             }
 
             // flag the data as loaded, so we don't do it twice
